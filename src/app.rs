@@ -393,6 +393,8 @@ pub struct App {
     /// (ADR 0109).
     pub shape_dialog: Option<crate::shape_dialogs::ShapeDialog>,
     pub shape_last: crate::shape_dialogs::Last,
+    pub trace: Option<crate::trace_dialog::TraceDialog>,
+    pub trace_last: anicraft_engine::trace::TraceSettings,
     /// Convert Audio to Keyframes and Auto Lip-Sync (ADR 0114): the dialog while it is open
     /// (its preview is a gesture it keeps open until OK or Cancel), and what it was last given.
     pub audio_keys: Option<crate::audio_keys::Dialog>,
@@ -785,6 +787,8 @@ impl App {
             tl_color_open: None,
             convert_last: Default::default(),
             shape_dialog: None,
+            trace: None,
+            trace_last: Default::default(),
             audio_keys: None,
             data_view: None,
             data_reimport: None,
@@ -3327,7 +3331,7 @@ impl App {
 
     /// Any modal (prompt, confirmation, close guard) is open: global shortcuts pause.
     pub fn modal_open(&self) -> bool {
-        self.prompt.is_some() || self.convert.is_some() || self.shape_dialog.is_some() || self.audio_keys.is_some() || self.confirm.is_some() || self.tabs.asking() || self.plugin_dialog.is_some() || self.templates.save.is_some() || self.video_import.is_some()
+        self.prompt.is_some() || self.convert.is_some() || self.shape_dialog.is_some() || self.trace.is_some() || self.audio_keys.is_some() || self.confirm.is_some() || self.tabs.asking() || self.plugin_dialog.is_some() || self.templates.save.is_some() || self.video_import.is_some()
     }
 
     /// The single entry point for user-initiated commands: asks first when the engine says the
@@ -3755,6 +3759,11 @@ impl App {
         }
         if id == "modify.soften_fill_edges" {
             crate::shape_dialogs::open(self, crate::shape_dialogs::Kind::Soften);
+            return;
+        }
+        // Modify › Bitmap › Trace Bitmap asks for Animate's four settings (#463).
+        if id == "modify.trace_bitmap" {
+            crate::trace_dialog::open(self);
             return;
         }
         // Convert Audio to Keyframes and Auto Lip-Sync ask what the sound drives, with a live
@@ -4731,6 +4740,7 @@ impl App {
         self.prompt_window(&ctx);
         crate::convert_symbol::window(self, &ctx);
         crate::shape_dialogs::window(self, &ctx);
+        crate::trace_dialog::window(self, &ctx);
         crate::aids_dialog::window(self, &ctx);
         crate::templates::save_window(self, &ctx);
         crate::layer_props::window(self, &ctx);

@@ -1,6 +1,6 @@
 # Command reference
 
-Everything you can do in AniCraft is a command: the menus, the shortcuts, the command palette (**Ctrl+K**, macOS **⌘K**), `anicraft-cli` and AI assistants over MCP all run the same 395 commands, listed here by menu. The id is what scripts and [working headless](../working-headless.md) use; the parameters are what a command takes as JSON. Commands that change the document are one undo step each. Your own shortcuts (**Help › Keyboard Shortcuts**) replace the defaults shown here; see the [shortcut reference](shortcuts.md).
+Everything you can do in AniCraft is a command: the menus, the shortcuts, the command palette (**Ctrl+K**, macOS **⌘K**), `anicraft-cli` and AI assistants over MCP all run the same 397 commands, listed here by menu. The id is what scripts and [working headless](../working-headless.md) use; the parameters are what a command takes as JSON. Commands that change the document are one undo step each. Your own shortcuts (**Help › Keyboard Shortcuts**) replace the defaults shown here; see the [shortcut reference](shortcuts.md).
 
 This page is generated from the command registry, so it always matches the version of AniCraft it came with.
 
@@ -202,6 +202,10 @@ This page is generated from the command registry, so it always matches the versi
   Parameters: `{} (within each layer)`
 - **Convert to Symbol…** `modify.convert_to_symbol` · **F8** · changes the document
   Parameters: `{name? (default: the next free “Symbol n”; a name the folder holds gets a number), kind?: graphic|movie_clip|button (default: graphic), folder?: Library folder id (default: the top level)} → {symbol, instance, name, layer, folder} (a selection on several layers becomes one symbol with those layers inside; the instance lands on the topmost)`
+- **Convert to Bitmap** `modify.convert_to_bitmap` · changes the document
+  Parameters: `{} the selection, as it is drawn at the playhead, becomes one bitmap in the Library (the next free “Bitmap n”), placed where the selection was, on the topmost of its layers, and selected → {bitmap, element, name, width, height}`
+- **Trace Bitmap…** `modify.trace_bitmap` · Modify › Bitmap · changes the document
+  Parameters: `{color_threshold? (1..500, default 100: neighbouring pixels whose red, green and blue differ by less, added up, are one colour), min_area? (1..1000 pixels, default 8: smaller areas join the neighbour they share the most edge with), curve_fit?: pixels|very_tight|tight|normal|smooth|very_smooth (default normal), corner_threshold?: many|normal|few (default normal)} the selected bitmaps become filled raw shapes, one per area of colour, in their place (pixels under half opacity stay empty) → {shapes, elements}`
 - **Break Apart** `modify.break_apart` · **Ctrl+B** (macOS **⌘B**) · changes the document
   Parameters: `{} the selected symbol instances become their contents, text becomes shapes, and drawing objects become raw shapes that merge with the raw shapes they touch`
 - **Group** `modify.group` · **Ctrl+G** (macOS **⌘G**) · changes the document

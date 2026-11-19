@@ -70,6 +70,7 @@ pub mod recovery;
 pub mod render_service;
 pub mod selection;
 pub mod snap;
+pub mod trace;
 pub mod transfer;
 pub mod params;
 pub mod plugin_export;
